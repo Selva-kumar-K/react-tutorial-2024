@@ -12,6 +12,7 @@ const App = () => {
 
   const [state, setState] = useState(false)
 
+  const [input, setInput] = useState("")
   const [product, setProducts] = useState(['Product1', 'Product2', 'Product3'])
   const [bug, fixBugs] = useState([{
     id: 1,
@@ -45,6 +46,24 @@ const App = () => {
     // console.log(bug)
   }
 
+  const handleBackend = async() => {
+    await fetch("http://localhost:4000").then((response) => response.json()).then((data) => console.log(data))
+
+  }
+
+  const handleFrontend = () => {
+
+    const reqOptions = {
+
+      method : 'POST',
+      headers : {
+        'Content-Type' : 'Application/json'},
+      body : JSON.stringify({data : input})
+    }
+
+    fetch("http://localhost:4000/users", reqOptions).then((response) => response.json()).then((data) => console.log(data))
+  }
+
   return(
   <>
   {/* <ListGroup items={items} heading="Cities" onSelectItems={handleSelectItems}/> */}
@@ -67,6 +86,11 @@ const App = () => {
 
 <Navbar cartItemsCount={product.length}/>
 <ProductList products={product} onClear={() => setProducts([])}/>
+
+<button onClick={handleBackend}>Get Data from Backend</button>
+
+<input type="text" onChange={(e) => setInput(e.target.value)}/>
+<button onClick={handleFrontend}>Click to send to backend</button>
   </>
   )
 }
