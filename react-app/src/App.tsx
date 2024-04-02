@@ -13,9 +13,10 @@
 // import Form from "./components/Form";
 
 import { useState } from "react"
-import ProjectForm from "./components/ProjectForm"
 import Expense from "./expense-tracker/components/Expense"
 import ExpenseFilter from "./expense-tracker/components/ExpenseFilter"
+import ExpenseForm from "./expense-tracker/components/ExpenseForm"
+
 
 // const App = () => {
 
@@ -167,20 +168,25 @@ import ExpenseFilter from "./expense-tracker/components/ExpenseFilter"
 
 const App = () => {
 
-  const [items,setItems] = useState([
-    {id : 1, description : "aaa", amount : 23, category : 'Utilities'},
-    {id : 2, description : "bbb", amount : 10, category : 'Groceries'},
-    {id : 3, description : "ccc", amount : 10, category : 'Groceries'},
-    {id : 4, description : "ddd", amount : 10, category : 'Utilities'}
+  const [items, setItems] = useState([
+    {id : 1, description : "Milk", amount : 5, category : 'Groceries'},
+    {id : 2, description : "Curd", amount : 8, category : 'Groceries'},
+    {id : 3, description : "EB Bill", amount : 30, category : 'Utilities'},
+    {id : 4, description : "Water Bill", amount : 20, category : 'Utilities'},
+    {id : 5, description : "Movie", amount : 20, category : 'Entertainment'},
+    {id : 6, description : "Theme Park", amount : 70, category : 'Entertainment'},
   ])
-  const [selectCategory, setSelectCategory] = useState('')
 
-  const visibleExpenses = selectCategory ? items.filter((d) => d.category === selectCategory) : items
+  const [category, setCategory] = useState('')
+
+  const expenseVisible = category ? items.filter((i) => i.category === category) : items
+ 
 
   return(
     <>
-    <ExpenseFilter onSelect={(e) => setSelectCategory(e)}/>
-    <Expense expense={visibleExpenses} onDelete={(id => setItems(items.filter(d => d.id !== id)))}/>
+    <ExpenseForm items={(data) => setItems([...items, {...data, id : items.length + 1}])}/>
+    <ExpenseFilter onSelect={(category) => setCategory(category)}/>
+    <Expense expenses={expenseVisible} onDelete={(id) => setItems(items.filter(item => item.id !== id))}/>
     </>
   )
 }
